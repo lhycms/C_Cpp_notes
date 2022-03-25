@@ -1,15 +1,13 @@
 #include <iostream>
-#include <string>
 
+int main(int argc, char **argv) {
+    int arr[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    
+    int *e = &arr[10];
 
-std::string sa[10];
-int ia[10];
+    for (int *b=arr; b!=e; b++) {
+        std::cout << *b << std::endl;
+    }
 
-int main() {
-    std::string sa2[10];
-    int ia2[10];
-
-    for (auto &c: ia2) 
-        std::cout << c << std::endl;
-    return 0;
+    return EXIT_SUCCESS;
 }
