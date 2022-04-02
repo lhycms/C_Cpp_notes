@@ -4,12 +4,11 @@
  * @Author: sch
  * @Date: 2022-04-02 11:17:17
  * @LastEditors: sch
- * @LastEditTime: 2022-04-02 11:24:27
+ * @LastEditTime: 2022-04-02 12:05:32
  */
 #include <iostream>
 #include <stdlib.h>
-#include "add.h"
-#include "substract.h"
+#include "function.h"
 
 
 int main(int argc, char **argv) {

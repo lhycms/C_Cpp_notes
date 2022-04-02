@@ -1,16 +1,10 @@
 all : main
 
-main : main.o libfunction.a(libadd.a libsubstract.a)
+main : main.o libfunction.a(add.o substract.o)
 	g++ -Wall -std=c++17 main.o -L. -lfunction -o main
 
-libfunction.a(libadd.a libsubstract.a) : libadd.a libfunction.a
-	ar rcs libfunction.a libadd.a libsubstract.a
-
-libadd.a : add.o
-	ar rcs libadd.a add.o
-
-libsubstract.a : substract.o
-	ar rcs libsubstract.a substract.o
+libfunction.a(add.o substract.o) : add.o substract.o
+	ar rcs libfunction.a add.o substract.o
 
 add.o : add.cpp
 	g++ -Wall -std=c++17 -c add.cpp -o add.o
