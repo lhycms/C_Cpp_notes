@@ -1,13 +1,23 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
 
 int main() {
-    std::vector<int> arr{ 1, 5, 8, 9, 6, 7, 3, 4, 2, 0 };
-    int n = arr.size();
+    std::vector<int> v = { 7, 3, 6, 2, 6};
+    int key = 6;
 
-    std::sort(arr.begin(), arr.end());
+    std::vector<int>::iterator itr = std::find(v.begin(),
+                                            v.end(),
+                                            key);
 
-    for (auto &value: arr) 
-        std::cout << value << "  ";
+    if (itr != v.cend() ) {
+        std::cout << "Element present at index: "
+                << std::distance(v.begin(), itr)
+                << std::endl;
+    }                        
+    else
+        std::cout << "Not Found!!!\n";
+
     return 0;
 }
