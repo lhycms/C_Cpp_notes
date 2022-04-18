@@ -1,57 +1,40 @@
 #include <iostream>
-#include <string>
-#include <vector>
 
 
-class Screen {
-public:
-    typedef std::string::size_type pos;
-
-    // 构造函数
-    Screen() = default;
-    Screen(pos ht, pos wd):
-        height(ht), width(wd), contents(ht * wd, ' ');
-    Screen(pos ht, pos wd, char c):
-        height(ht), width(wd), contents(ht * wd, c) { };
-
-    // 函数成员
-    char get() const { return contents[cursor]; }
-    inline char get(pos r, pos c) const;
-    Screen &move(pos r, pos c);
-    Screen &set(char);
-    Screen &set(pos, pos, char);
-    void some_member() const;
-
+class BaseClass {
 private:
-    pos cursor = 0;
-    pos height = 0, width = 0;
-    std::string contents;
-    mutable size_t access_ctr = 0;
+    int Pvt = 1;
+
+protected:
+    int Prot = 2;
+
+public:
+    int Pub = 3;
+
+    // function to access Pvt
+    int GetPvt() {
+        return Pvt;
+    }
 };
 
 
-inline 
-char Screen::get(pos r, pos c) const {
-    pos row = r * width;
-    return contents[row + c];
-}  
+class PublishDerivedClass: private BaseClass {
+public:
+    int GetProt() {
+        return Prot;
+    }
 
-Screen& Screen::move(pos r, pos c) {
-    pos row = r * width;
-    this->cursor = row + c;
-    return *this;
-}
+    int GetPub() {
+        return Pub;
+    }
+};
 
-void Screen::some_member() const {
-    this->access_ctr++;
-}
 
-inline Screen &Screen::set(char c) {
-    contents[cursor] = c;
-    return *this;
-}
+int main() {
+    PublishDerivedClass object;
+    std::cout << "Private: " << "Private cann't be accessed." << std::endl;
+    std::cout << "Protected: " << object.GetProt() << std::endl;
+    std::cout << "Published: " << object.GetPub() << std::endl;
 
-inline Screen &Screen::set(pos r, pos col, char ch) {
-    contents[r * width + col] = ch;
-    return *this;
+    return 0;
 }
