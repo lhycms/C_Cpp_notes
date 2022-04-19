@@ -1,40 +1,62 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 
-class BaseClass {
+// Base Class
+class YouTubeChannel {
+public:
+    // Constructor Function
+    YouTubeChannel();
+    YouTubeChannel(std::string name, std::string owner_name);
+
 private:
-    int Pvt = 1;
+    std::string Name;
+    std::string OwnerName;
+    unsigned int SubscribersCount;
+};
 
-protected:
-    int Prot = 2;
+
+// YouTubeChannel 构造函数
+YouTubeChannel::YouTubeChannel(std::string name, std::string owner_name) {
+    Name = name;
+    OwnerName = owner_name;
+    SubscribersCount = 0;
+}
+
+
+// Derived Class 1
+class CookingYouTubeChannel: public YouTubeChannel {
 
 public:
-    int Pub = 3;
+    CookingYouTubeChannel();
+    CookingYouTubeChannel(std::string name, std::string owner_name): YouTubeChannel(name, owner_name) { };
 
-    // function to access Pvt
-    int GetPvt() {
-        return Pvt;
+    void practice() {
+        std::cout << "Cooking...\n";
     }
 };
 
 
-class PublishDerivedClass: private BaseClass {
-public:
-    int GetProt() {
-        return Prot;
-    }
+// Derived Class 2
+class SingingYouTubeChannel: public YouTubeChannel {
 
-    int GetPub() {
-        return Pub;
+public:
+    SingingYouTubeChannel();
+    SingingYouTubeChannel(std::string name, std::string owner_name): YouTubeChannel(name, owner_name) { };
+
+    void practice() {
+        std::cout << "Singing...\n";
     }
 };
 
 
+
+// Main Function
 int main() {
-    PublishDerivedClass object;
-    std::cout << "Private: " << "Private cann't be accessed." << std::endl;
-    std::cout << "Protected: " << object.GetProt() << std::endl;
-    std::cout << "Published: " << object.GetPub() << std::endl;
+    auto ptr_cooking = std::make_shared<CookingYouTubeChannel>("Cooking", "Liu Hanyu");
+    auto ptr_singing = std::make_shared<SingingYouTubeChannel>("Singing", "Liu Hanyu");
+    
+    ptr_cooking->practice();
+    ptr_singing->practice();
 
     return 0;
 }
