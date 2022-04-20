@@ -15,6 +15,10 @@ public:
     std::string get_name();
     unsigned int get_subscribers_count();
 
+    bool operator==(const YouTubeChannel &yt_channel) const {
+        return (this->Name == yt_channel.Name);
+    }
+
 
 private:
     std::string Name;
@@ -51,16 +55,22 @@ Part II
 */
 class MyCollection {
 public:
-    std::vector<YouTubeChannel> my_channels;
+    std::list<YouTubeChannel> my_channels;
 
     MyCollection() = default;
 
     void operator+=(YouTubeChannel &yt_channel);
+    void operator-=(YouTubeChannel &yt_channel);
 };
 
-// 成员函数
+// 运算符重载
 void MyCollection::operator+=(YouTubeChannel &yt_channel) {
     my_channels.push_back(yt_channel);
+}
+
+// 运算符重载
+void MyCollection::operator-=(YouTubeChannel &yt_channel) {
+    my_channels.remove(yt_channel);
 }
 
 // 运算符重载
@@ -72,12 +82,17 @@ std::ostream& operator<<(std::ostream &COUT, MyCollection &my_collection) {
 
 
 int main() {
-    YouTubeChannel* ptr_yt_channel = new YouTubeChannel("Programming", 24);
+    YouTubeChannel* ptr_yt_channel_1 = new YouTubeChannel("Programming_1", 24);
+    YouTubeChannel* ptr_yt_channel_2 = new YouTubeChannel("Programming_2", 24);
 
     MyCollection *my_collection = new MyCollection();
-    *my_collection += *ptr_yt_channel;
-    *my_collection += *ptr_yt_channel;
+    *my_collection += *ptr_yt_channel_1;
+    *my_collection += *ptr_yt_channel_2;
+    std::cout << "添加两个 channels 后, my_channels:\n";
     std::cout << *my_collection << std::endl;
 
+    *my_collection -= *ptr_yt_channel_2;
+    std::cout << "删除一个 channels 后, my_channels:\n";
+    std::cout << *my_collection << std::endl;
     return 0;
 }
