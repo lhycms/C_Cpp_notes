@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sch
  * @Date: 2022-04-17 10:33:40
- * @LastEditors: sch
- * @LastEditTime: 2022-04-17 11:30:12
+ * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
+ * @LastEditTime: 2022-05-28 15:57:00
 -->
 <font color="73DB90" size="4">
 
@@ -122,7 +122,8 @@ Division by zero condition!
 
 <font color="73DB90" size="4">
 
-Here, `what()` is a public method provided by exception class and it has been overridden by all the child exception classes. This returns the cause of an exception.
+1. Here, `what()` is a `public method provided by exception class` and it has been overridden by all the child exception classes. This returns the cause of an exception.
+2. `const throw()`: 不是函数，这个东西叫做异常规格说明，表示`what()`函数可以抛出异常的类型，类型说明放在`()`里。这里面没有类型, 就是声明这个函数不抛出异常。
 
 </font>
 
@@ -132,9 +133,12 @@ Here, `what()` is a public method provided by exception class and it has been ov
 
 
 struct MyException : public std::exception {
+
+public:
     const char* what () const throw() {
         return "C++ Exception";
     }
+    
 };
 
 
