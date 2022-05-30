@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sch
  * @Date: 2022-04-17 11:32:28
- * @LastEditors: sch
- * @LastEditTime: 2022-04-17 11:58:32
+ * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
+ * @LastEditTime: 2022-05-29 10:44:28
 -->
 # 1. Demo 1
 <font color="73DB90" size="4">
@@ -129,7 +129,7 @@ libc++abi: terminating with uncaught exception of type char
 ```
 
 
-# 5. Demo 5
+# 5. Demo 5: 退出代码块时，局部变量被释放
 <font color="73DB90" size="4">
 
 1. When an exception is thrown, all objects created inside the enclosing try block are `destructed` before the control is transferred to catch block.
@@ -165,4 +165,52 @@ Output:
 Constructor
 Destructor
 Caught 10
+```
+
+
+# 6. Demo 6: 编写 `std::exception` 的派生类
+```c++
+#include <iostream>
+#include <exception>
+
+
+class TestException: public std::exception {
+
+public:
+    // 构造函数
+    TestException() {
+        std::cout << "Constructor Function...\n";
+    }
+
+    // 析构函数
+    ~TestException() {
+        std::cout << "Destructor Function...\n";
+    }
+
+
+    const char* what() const throw() {
+        return "Test Exception.\n";
+    }
+
+};
+
+
+int main() {
+    try {
+        throw TestException();
+    } catch (TestException& e) {
+        std::cout << e.what();
+    }
+
+    return 0;
+}
+```
+
+Output:
+```shell
+$ g++ -Og -std=c++20 test.cpp -o test
+$ ./test
+Constructor Function...
+Test Exception.
+1Destructor Function...
 ```
