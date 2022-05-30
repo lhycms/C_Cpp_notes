@@ -2,7 +2,7 @@
  * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
  * @Date: 2022-05-29 14:48:52
  * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @LastEditTime: 2022-05-29 18:04:36
+ * @LastEditTime: 2022-05-30 16:37:33
  * @FilePath: /C_C++/C++_拷贝控制/notes/Copy_Constructor.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,35 +26,45 @@ ClassName (const ClassName &old_obj);
 
 
 class Point {
-
 private:
-    int x, y;
+    float x, y;
 
 public:
-    // Constructor Function
-    Point(int x1, int y1) {
+    // Constructor
+    Point(float x1, float y1) {
         std::cout << "Calling constructor...\n";
         x = x1;
         y = y1;
     }
 
     // Copy Constructor
-    Point(const Point& p1) {
+    Point(const Point &p1) {
         std::cout << "Calling copy constructor...\n";
         x = p1.x;
         y = p1.y;
     }
 
-    int getX()  { return x; }
-    int getY()  { return y; }
-
+    // 友元函数: 运算符重载
+    friend std::ostream& operator<<(std::ostream& COUT, Point& p);
 };
 
 
-int main() {
-    Point p1(10, 15);
-    Point p2 = p1;
+// Reload Operation
+std::ostream& operator<<(std::ostream& COUT, Point& p) {
 
+    COUT << "x = " << p.x << std::endl;
+    COUT << "y = " << p.y << std::endl;
+
+    return COUT;
+}
+
+
+int main() {
+    Point p_1(10, 15);  // 调用构造函数
+    std::cout << p_1;
+
+    Point p_2 = p_1;    // 构造拷贝构造函数
+    std::cout << p_2;
     return 0;
 }
 ```
@@ -63,7 +73,11 @@ Output:
 $ g++ -Og -std=c++20 test.cpp -o test
 $ ./test 
 Calling constructor...
+x = 10
+y = 15
 Calling copy constructor...
+x = 10
+y = 15
 ```
 
 
@@ -148,7 +162,7 @@ Return Value Optimization (`RVO`)
 </font>
 
 
-# 4. When is a `user-defined copy constructor` needed? 
+# 4. When is a `user-defined copy constructor` needed?  `Shallow Copy` vs. `Deep Copy`
 <font color="73DB90" size="4">
 
 1. If we don't define our own copy constructor, the `C++ compiler` creates `a deafault copy  constructor for each class` which does a member-wise copy between objects.
@@ -189,7 +203,7 @@ t2 = t1;    // Call assignment operator
 
 </font>
 
-# 6. Write an example class where a `copy constructor is needed`?
+# 6. Write an example class where a `copy constructor is needed`?   `Shallow Copy` vs. `Deep Copy`
 
 ## 6.1. Demo 1. 类中含有 `Copy Constructor`
 Following is a complete C++ program to demonstrate the use of the Copy constructor. In the following String class, we must write a copy constructor. 
@@ -283,7 +297,7 @@ What would be the problem if we remove the copy constructor from the above code?
 ```
 
 
-# 7. Can we make the copy constructor private? 
+# 7. Can we make the copy constructor `private`? 该类不能拷贝(The class become `non-copyable`)
 <font color="73DB90" size="4">
 
 1. Yes, a `copy constructor` can be made `private`. 
@@ -292,6 +306,66 @@ What would be the problem if we remove the copy constructor from the above code?
 4. In such situations, we can either write our own copy constructor like the above String example or make a private copy constructor so that users get compiler errors rather than surprises at runtime. 
 
 </font>
+
+```c++
+#include <iostream>
+
+
+class Point {
+private:
+    float x, y;
+
+    // Copy Constructor
+    Point(const Point &p1) {
+        std::cout << "Calling copy constructor...\n";
+        x = p1.x;
+        y = p1.y;
+    }
+
+public:
+    // Constructor
+    Point(float x1, float y1) {
+        std::cout << "Calling constructor...\n";
+        x = x1;
+        y = y1;
+    }
+
+    // 友元函数: 运算符重载
+    friend std::ostream& operator<<(std::ostream& COUT, Point& p);
+};
+
+
+// Reload Operation
+std::ostream& operator<<(std::ostream& COUT, Point& p) {
+
+    COUT << "x = " << p.x << std::endl;
+    COUT << "y = " << p.y << std::endl;
+
+    return COUT;
+}
+
+
+int main() {
+    Point p_1(10, 15);
+    std::cout << p_1;
+
+    Point p_2 = p_1;
+    std::cout << p_2;
+    return 0;
+}
+```
+Output:
+```shell
+$ g++ -Og -Wall test.cpp -o test
+$ ./test
+test.cpp:42:17: error: calling a private constructor of class 'Point'
+    Point p_2 = p_1;
+                ^
+test.cpp:9:5: note: declared private here
+    Point(const Point &p1) {
+    ^
+1 error generated.
+```
 
 
 # 8. Why argument to a `copy constructor` must be passed `as a reference`? 
@@ -316,3 +390,4 @@ Note
 </font>
 
 ## 9.2. Reason 2
+https://www.geeksforgeeks.org/copy-constructor-argument-const/
