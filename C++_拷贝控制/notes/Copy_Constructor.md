@@ -2,7 +2,7 @@
  * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
  * @Date: 2022-05-29 14:48:52
  * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @LastEditTime: 2022-05-30 16:37:33
+ * @LastEditTime: 2022-05-31 11:51:41
  * @FilePath: /C_C++/C++_拷贝控制/notes/Copy_Constructor.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -205,7 +205,7 @@ t2 = t1;    // Call assignment operator
 
 # 6. Write an example class where a `copy constructor is needed`?   `Shallow Copy` vs. `Deep Copy`
 
-## 6.1. Demo 1. 类中含有 `Copy Constructor`
+## 6.1. Demo 1. 类中含有 `Copy Constructor` -- `Deep Copy`
 Following is a complete C++ program to demonstrate the use of the Copy constructor. In the following String class, we must write a copy constructor. 
 
 ```c++
@@ -221,45 +221,67 @@ private:
     size_t size;
 
 public:
-    String(const char* str = NULL); // constructor
-    ~String() { delete [] s; }  // destructor
-    String(const String&);  // copy constructor
+    // Constructor
+    String(char *s);
 
-    void print() {
-        std::cout << s << std::endl;
-    }   // Function to print string
+    // Copy Constructor 
+    String(const String &);
 
-    void change(const char*);   // Function to change
+    // Copy-assignment Operator
+    String& operator=(const String&);
+
+    // Desctructor
+    ~String() { delete [] s; }
+
+    // member function: print()
+    void print();
+
+    // member function: change()
+    void change(const char*);
 };
 
 
-// In this the pointer returns the CHAR ARRAY
-// in the same sequence of string object but
-// with an additional null pointer '\0'
-String::String(const char* str) {
-    size = strlen(str);
+// Constructor
+String::String(char *c) {
+    size = strlen(c);
     s = new char[size + 1];
-    strcpy(s, str);
+    strcpy(s, c);
 }
 
 
-void String::change(const char* str) {
+// Copy Constructor
+String::String(const String &old_string) {
+    size = old_string.size;
+    s = new char[size + 1];
+    strcpy(s, old_string.s);
+}
+
+
+// Copy-assignment Operator 
+String& String::operator=(const String &old_string) {
+    size = old_string.size;
+    s = new char[size + 1];
+    strcpy(s, old_string.s);
+    return *this;
+}
+
+
+// member function: print()
+void String::print() {
+    std::cout << s << std::endl;
+}
+
+
+// member function: change()
+void String::change(const char* c) {
     delete [] s;
-    size = strlen(str);
+    size = strlen(c);
     s = new char[size + 1];
-    strcpy(s, str);
+    strcpy(s, c);
 }
 
 
-String::String(const String& old_str) {
-    size = old_str.size;
-    s = new char[size+1];
-    strcpy(s, old_str.s);
-}
-
-
-int main()
-{
+int main() {
     String str1("GeeksQuiz");
     String str2 = str1;
  
@@ -284,7 +306,7 @@ GeeksQuiz
 GeeksforGeeks
 ```
 
-## 6.2. Demo 2. 类中不含 `Copy Constructor`
+## 6.2. Demo 2. 类中不含 `Copy Constructor` -- `Shallow copy`
 <font color="orange" size="4">
 
 What would be the problem if we remove the copy constructor from the above code? 
@@ -293,7 +315,92 @@ What would be the problem if we remove the copy constructor from the above code?
 </font>
 
 ```c++
+#include <iostream>
+#include <cstring>
 
+
+class String {
+private:
+    char *s;
+    size_t size;
+
+public:
+    // Constructor
+    String(char *s);
+
+    // Copy-assignment Operator
+    String& operator=(const String&);
+
+    // Desctructor
+    ~String() { delete [] s; }
+
+    // member function: print()
+    void print();
+
+    // member function: change()
+    void change(const char*);
+};
+
+
+// Constructor
+String::String(char *c) {
+    size = strlen(c);
+    s = new char[size + 1];
+    strcpy(s, c);
+}
+
+
+
+// Copy-assignment Operator 
+String& String::operator=(const String &old_string) {
+    size = old_string.size;
+    s = new char[size + 1];
+    strcpy(s, old_string.s);
+    return *this;
+}
+
+
+// member function: print()
+void String::print() {
+    std::cout << s << std::endl;
+}
+
+
+// member function: change()
+void String::change(const char* c) {
+    delete [] s;
+    size = strlen(c);
+    s = new char[size + 1];
+    strcpy(s, c);
+}
+
+
+int main() {
+    String str1("GeeksQuiz");
+    String str2 = str1;
+ 
+    str1.print(); // what is printed ?
+    str2.print();
+ 
+    str2.change("GeeksforGeeks");
+ 
+    str1.print(); // what is printed now ?
+    str2.print();
+    return 0;
+}
+```
+
+Output:
+```shell
+$ g++ std=c++20 test.cpp -o test
+$ ./test
+GeeksQuiz
+GeeksQuiz
+GeeksforGeeks
+GeeksforGeeks
+test(35183,0x2024ab600) malloc: *** error for object 0x600002804040: pointer being freed was not allocated
+test(35183,0x2024ab600) malloc: *** set a breakpoint in malloc_error_break to debug
+[1]    35183 abort      ./test
 ```
 
 
