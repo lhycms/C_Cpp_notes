@@ -1,78 +1,62 @@
-/*
- * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @Date: 2022-06-04 17:46:29
- * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @LastEditTime: 2022-06-06 20:04:21
- * @FilePath: /C_C++/c++_STL/code/test.cpp
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-// C++ program to illustrate the 
-// above concepts
-#include <bits/stdc++.h>
 #include <iostream>
-#define N 3
-#define M 3 
 
 
-// Matrix class
-class Matrix {
+class Distance {
 private:
-    int arr[M][N];
-
+    int feet;
+    int inches;
 
 public:
-    // Overloading of input stream 
-    friend std::istream& operator>>(std::istream&, Matrix&);
+    // 构造函数
+    // Distance() = default;
+    
+    Distance() {
+        feet = 0;
+        inches = 0;
+    }
 
-    // Overloading of output stream
-    friend std::ostream& operator<<(std::ostream&, Matrix&);
+    Distance(int f, int i) {
+        feet = f;
+        inches = i;
+    }
 
-    int& operator()(int, int);
+    // Overloading function-call operator
+    /*
+    Note
+    ----
+        1. 此处不可以返回 Distance&, 因为 D 是一个局部变量
+           局部变量会在结束时销毁，因此引用可能出错。
+    */
+    Distance operator()(int a, int b, int c) {
+        Distance D;
+        // 进行随机计算
+        D.feet = a + c + 10;
+        D.inches = b + c + 100;
+        return D;
+    }
+
+    // Overloading cout operator
+    friend std::ostream& operator<<(std::ostream&, Distance&);
 };
 
 
-// Function to overload the input ">>" operator
-std::istream& operator>>(std::istream& CIN, Matrix &m) {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            // Overloading operator()
-            // to take input
-            CIN >> m(i, j);
-        }
-    }
-    return CIN;
-}
-
-
-// Function to overload the output "<<" operator
-std::ostream& operator<<(std::ostream& COUT, Matrix &m) {
-    for (int i = 0 ; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            // Overloading operator() to
-            // take input m.operator()(i,j)
-            COUT << m(i, j) << "\t";
-        }
-        COUT << std::endl;
-    }
+// Overloading cout operator
+std::ostream& operator<<(std::ostream& COUT, Distance &d) {
+    COUT << "feet = " << d.feet << ", inches = "
+            << d.inches << std::endl;
     return COUT;
-} 
-
-
-// Function to call the operator
-// function to overload the operators
-int& Matrix::operator()(int i, int j) {
-    return arr[i][j];
 }
 
 
-// Driver code
 int main() {
-    Matrix m;
-    std::cout << "Input the matrix:\n";
-    std::cin >> m;
+    Distance D1(11, 10), D2;
 
-    std::cout << "The matrix is:\n";
-    std::cout << m;
+    std::cout << "First Distance : \n";
+    std::cout << D1;
+
+    D2 = D1(10, 10, 10); // invoke operator()
+    std::cout << "Second Distance : \n";
+    std::cout << D2;
 
     return 0;
 }
