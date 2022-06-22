@@ -2,45 +2,46 @@
 
 
 
-class Interval {
-
+class Coordination {
 private:
-    int x, y;
+    int x, y, z;
 
 public:
-    // Constructor function
-    Interval() = default;
-    Interval(int x_value, int y_value):
-                            x(x_value),
-                            y(y_value) {
-        std::cout << "Calling constructor function...\n";
+    Coordination() = default;
+    
+    Coordination(int x_value, int y_value, int z_value) :
+                    x(x_value), 
+                    y(y_value),
+                    z(z_value) 
+    {
+        std::cout << "Calling constructor...\n";
     }
 
-
-    // Copy Constructor function
-    Interval(const Interval &i):
-                            x(i.x),
-                            y(i.y) {
-        std::cout << "Calling copy constructor function...\n";
+    Coordination(Coordination &c) : 
+                    x(c.x),
+                    y(c.y),
+                    z(c.z)
+    {
+        std::cout << "Calling copy constructor...\n" ;
     }
-
-
-    // Assignment Operator
-    Interval& operator=(const Interval &i) {
-        x = i.x;
-        y = i.y;
-        std::cout << "Calling assignment operator...\n";
-
-        return *this;
-    }
-
 };
 
 
 int main() {
-    Interval interval = {1, 2};
-    Interval interval_2 = interval;
-    interval_2 = interval;
+    std::cout << "c_1:\t";
+    Coordination c_1(1, 2, 3);  // 直接初始化
+
+    std::cout << "c_2:\t";
+    Coordination c_2(c_1);  // 拷贝初始化
+
+    std::cout << "c_3:\t";
+    Coordination c_3 = c_1; // 拷贝初始化
+
+    std::cout << "c_4:\t";
+    Coordination c_4 = {1, 2, 3};   // 直接初始化
+
+    std::cout << "c_5:\t";  
+    Coordination c_5 = Coordination(4, 5, 6);   // 直接初始化
 
     return 0;
 }
