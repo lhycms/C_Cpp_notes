@@ -1,74 +1,39 @@
+/*
+CPP program to implement `binary search` in STL 
+*/
 #include <iostream>
 #include <algorithm>
-#include <cmath>
-#include <initializer_list>
 
 
-class Coordination {
-private:
-    int x, y, z;
-
-public:
-    // Constructor 
-    Coordination() = default;
-
-    // Constructor
-    Coordination(int x_value, int y_value, int z_value):
-                        x(x_value), y(y_value), z(z_value)
-    {   }
-
-
-    // Copy Constructor
-    Coordination(const Coordination& coordination) {
-        x = coordination.x;
-        y = coordination.y;
-        z = coordination.z;
+void show(int array[], int array_size) {
+    for (int i=0; i<array_size; i++) {
+        std::cout << array[i] << "\t";
     }
-
-    // Overloading copy assignment operator
-    Coordination& operator=(Coordination &coordination) {
-        x = coordination.x;
-        y = coordination.y;
-        z = coordination.z;
-
-        return *this;
-    }
-
-    // Overload `<<`
-    friend std::ostream& operator<<(std::ostream&, Coordination&);
-    
-    // Compare
-    friend bool compareCoordination(Coordination&, Coordination&);
-};
-
-
-// Overload `<<`
-std::ostream& operator<<(std::ostream& COUT, Coordination &c) {
-    std::cout << "[" << c.x << ", " << c.y << ", " << c.z << "]" << std::endl;
-    return COUT;
+    std::cout << std::endl;
 }
 
 
-// Compare
-bool compareCoordination(Coordination &c1, Coordination &c2) {
-    float distance_1 = pow(c1.x, 2) + pow(c1.y, 2) + pow(c1.z, 2);
-    float distance_2 = pow(c2.x, 2) + pow(c2.y, 2) + pow(c2.z, 2);
-    return distance_1 < distance_2;
-}
-
-// show coordinations_lst
-void show(Coordination cs_lst[], int cs_size) {
-    for (int i=0; i<cs_size; i++) {
-        std::cout << cs_lst[i];
-    }
-}
-
-
-// Driver Code
 int main() {
-    Coordination cs_lst[] = { {9,2,3}, {7,7,7}, {6, 8, 10} };
-    int cs_lst_size = sizeof(cs_lst) / sizeof(cs_lst[0]);
-    show(cs_lst, cs_lst_size);
+    int array[] = { 1, 5, 8, 9, 6, 7, 3, 4, 2, 0 };
+    int array_size = sizeof(array, array_size);
+    std::cout << "The array is: \n";
+    show(array, array_size);
+
+    // Step 1. Sort the array. 
+    std::cout << "Step 1, Sort the array: \n";
+    std::sort(array, array + array_size);
+    show(array, array_size);
+
+    // Step 2. Search for 2, 10
+    if ( std::binary_search(array, array+array_size, 2) )
+        std::cout << "Element is found in array.\n";
+    else
+        std::cout << "Element is not found in array.\n";
+
+    if ( std::binary_search(array, array+array_size, 10) )
+        std::cout << "Element is found in array.\n";
+    else
+        std::cout << "Element is found in array.\n";
 
     return 0;
 }
