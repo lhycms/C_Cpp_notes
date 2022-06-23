@@ -1,30 +1,29 @@
-#include <iostream>
+/*
+ * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
+ * @Date: 2022-04-29 16:16:42
+ * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
+ * @LastEditTime: 2022-06-23 09:57:30
+ * @FilePath: /C_C++/c++_MPI/codes/main.cpp
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 #include "mpi.h"
+#include <stdio.h>
 
+int main(int argc, char** argv) {
 
-int main(int argc, char **argv) {
-    // Initialize MPI
-    MPI_Init(&argc, &argv);
-    int world_size, world_rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+        MPI_Init(NULL, NULL);      // initialize MPI environment
+        int world_size; // number of processes
+        MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
-    int color = world_rank / 4;
+        int world_rank; // the rank of the process
+        MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-    // Split
-    MPI_Comm row_comm;
-    MPI_Comm_split(MPI_COMM_WORLD, color, world_rank, &row_comm);
+        char processor_name[MPI_MAX_PROCESSOR_NAME]; // gets the name of the processor
+        int name_len;
+        MPI_Get_processor_name(processor_name, &name_len);
 
-    int row_rank, row_size;
-    MPI_Comm_size(row_comm, &row_size);
-    MPI_Comm_rank(row_comm, &row_rank);
+        printf("Hello world from processor %s, rank %d out of %d processors\n",
+                processor_name, world_rank, world_size);
 
-    printf("WORLD RANK/SIZE: %d/%d \t ROW RANK/SIZE: %d/%d\n",
-	            world_rank, world_size, row_rank, row_size);
-
-    MPI_Comm_free(&row_comm);
-
-    MPI_Finalize();
-
-    return 0;
+        MPI_Finalize(); // finish MPI environment
 }
