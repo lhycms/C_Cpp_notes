@@ -1,42 +1,39 @@
-// Cpp Program to implement `std::bsearch()`
+/*
+ * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
+ * @Date: 2022-06-04 17:46:29
+ * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
+ * @LastEditTime: 2022-06-23 17:00:25
+ * @FilePath: /C_C++/c++_STL/code/test.cpp
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+
+// Cpp program to illustrate `std::find_if()` and `std::find_if_not()`
 #include <bits/stdc++.h>
 
 
-// Binary predicate
-int compare(const void *ap, const void *bp) {
-    // Typecasting
-    const int *a = (int*)ap;
-    const int *b = (int*)bp;
-
-    if (*a < *b)
-        return -1;
-    else if (*a > *b)
-        return 1;
-    else 
-        return 0;
+// Returns true if argument is odd
+bool IsOdd(int i) {
+    return i % 2;
 }
 
 
 // Driver code
 int main() {
-    // Given array
-    int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    std::vector<int> vec{ 10, 25, 40, 55 };
 
-    // Size of array
-    int arr_size = sizeof(arr) / sizeof(arr[0]);
+    // Iterator to store the position of element found
+    std::vector<int>::iterator it;
 
-    // Element to be found
-    int key1 = 4;
+    // std::find_if()
+    it = find_if(vec.begin(), vec.end(), IsOdd);
+    std::cout << "The first odd value: " << *it << std::endl;
 
-    // Calling `std::bsearch()`
-    // Typecasting the returned pointer to int
-    int *p1 = (int*)std::bsearch(&key1, arr, arr_size, sizeof(arr[0]), compare);
+    // Iterator to store the position of element found
+    std::vector<int>::iterator ite;
 
-    // If non-zero value is returned, key is found
-    if (p1)
-        std::cout << key1 << " found at position " << (p1 - arr) << std::endl;
-    else
-        std::cout << key1 << " not found.\n";
+    // std:find_if_not()
+    ite = std::find_if_not(vec.begin(), vec.end(), IsOdd);
+    std::cout << "The first non-odd value is: " << *it << std::endl;
 
     return 0;
 }

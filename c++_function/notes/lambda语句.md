@@ -2,7 +2,7 @@
  * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
  * @Date: 2022-04-29 16:16:42
  * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @LastEditTime: 2022-06-23 15:26:02
+ * @LastEditTime: 2022-06-23 15:51:07
  * @FilePath: /C_C++/c++_function/notes/lambda语句.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -64,4 +64,46 @@ int main {
 ```
 2. Generally `return-type in lambda expression` are evaluated by compiler itself and we don’t need to specify that explicitly and `-> return-type part can be ignored` but in some complex case as in conditional statement, compiler can’t make out the return type and we need to specify that. 
 
-## 3.1. Demo 1
+## 3.1. Syntax for `lambda expression`
+1. A `lambda expression` can have more power than an ordinary function by `having access to variables from the enclosing scope`. We can `capture external variables` from enclosing scope by three ways : 
+    1. Capture by `reference`
+    2. Capture by `value`
+    3. Capture by `both (mixed capture)`
+2. Syntax uses for capturing variables
+    1. `[&]`: 
+    2. `[=]`: 
+    3. `[a, &b]`:
+3. A `lambda` with `empty capture clause []` can access only those variable which are local to it.
+
+## 3.2. Demo 1: `lambda expression` && `algorithm header file algorithm`
+https://www.geeksforgeeks.org/lambda-expression-in-c/
+1. `find_if(startaddress, endaddress, )`
+2. `sort(startaddress, endaddress, )`
+3. `count_if(startaddress, endaddress, )`
+4. `unique(startaddress, endaddress, )`
+5. `resize(startaddress, int)`
+6. `accumulate(startaddress, endaddress, )`
+
+```c++
+
+```
+
+
+
+## 3.3. Demo 2: We can also access `function` by storing this into `variable`
+```c++
+#include <iostream>
+#include <cmath>
+
+
+int main() {
+    // Store a `lambda function` as a variable
+    auto square = [](int i)
+    {
+        return pow(i, 2);
+    }
+
+    std::cout << "Square of 5 = " << square(5) << std::endl; 
+    return 0;
+}
+```
