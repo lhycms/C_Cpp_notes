@@ -1,39 +1,36 @@
-/*
- * @Author: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @Date: 2022-06-04 17:46:29
- * @LastEditors: Uper 41718895+Hyliu-BUAA@users.noreply.github.com
- * @LastEditTime: 2022-06-23 17:00:25
- * @FilePath: /C_C++/c++_STL/code/test.cpp
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-
-// Cpp program to illustrate `std::find_if()` and `std::find_if_not()`
-#include <bits/stdc++.h>
+#include <iostream>
 
 
-// Returns true if argument is odd
-bool IsOdd(int i) {
-    return i % 2;
-}
+class Point {
+private:
+    int x, y;
+
+public:
+    // Constructor
+    Point(int x_value=0, int y_value=0) : x(x_value), y(y_value)
+    {   }
+    /*
+        The above use of Initializer list is optional as the
+        constructor can also be written as:
+
+        Point(int i = 0, int j = 0) {
+            x = i;
+            y = j;
+        }
+
+    */
+
+   // member function 1
+   int getX() const {return x;}
+
+   // member function 2
+   int getY() const {return y;}
+};
 
 
-// Driver code
 int main() {
-    std::vector<int> vec{ 10, 25, 40, 55 };
-
-    // Iterator to store the position of element found
-    std::vector<int>::iterator it;
-
-    // std::find_if()
-    it = find_if(vec.begin(), vec.end(), IsOdd);
-    std::cout << "The first odd value: " << *it << std::endl;
-
-    // Iterator to store the position of element found
-    std::vector<int>::iterator ite;
-
-    // std:find_if_not()
-    ite = std::find_if_not(vec.begin(), vec.end(), IsOdd);
-    std::cout << "The first non-odd value is: " << *it << std::endl;
-
+    Point t1(10, 15);
+    std::cout << "x = " << t1.getX() << ", ";
+    std::cout << "y = " << t1.getY() << std::endl;
     return 0;
 }
