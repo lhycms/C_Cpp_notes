@@ -1,30 +1,49 @@
-// Demonstration of constant object,
-// show that constant object can only
-// call const member function
-#include<iostream>
-using namespace std;
-class Demo
-{
-    int value;
-    public:
-    Demo(int v = 0) {value = v;}
-    void showMessage()
-    {
-        cout<<"Hello World We are Tushar, "
-        "Ramswarup, Nilesh and Subhash Inside"
-        " showMessage() Function"<<endl;
+#include <iostream>
+#include <initializer_list>
+
+
+class MyClass {
+private:
+    int a, b;
+
+public:
+    // Constructor
+    MyClass(int a_value, int b_value) {
+        std::cout << "Calling Constructor...\n";
+        a = a_value;
+        b = b_value;
     }
-    void display()const
-    {
-        cout<<"Hello world I'm Rancho "
-        "Baba Inside display() Function"<<endl;
+
+    // Initializer list constructor (serve as `Conversion Constructor` at the same time)
+    MyClass(std::initializer_list<int> lst) {
+        std::cout << "Calling initializer list constructor (conversion constructor)...\n";
+        a = *(lst.begin());
+        b = *(lst.begin() + 1);
+    }
+
+    // Copy Assignment Operator
+    MyClass& operator=(const MyClass &myclass_value) {
+        std::cout << "Calling copy assignment operator...\n";
+        a = myclass_value.a;
+        b = myclass_value.b;
+
+        return *this;
+    }
+
+
+    void display() {
+        std::cout << "a = " << a
+                << ", b = " << b << std::endl;
     }
 };
-int main()
-{
-   //Constant object are initialised at the time of declaration using constructor
-    const Demo d1;
-    //d1.showMessage();Error occurred if uncomment.
-    d1.display();
-    return(0);
+
+
+int main(){
+    MyClass object(10, 20);
+    object.display();
+ 
+    // Multiple parameterized conversion constructor is invoked.
+    object = { 30, 40 };
+    object.display();
+    return 0;
 }
