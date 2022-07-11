@@ -1,5 +1,8 @@
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 #include <initializer_list>
+
 
 
 class Coordination {
@@ -7,12 +10,9 @@ private:
     double x, y, z;
 
 public:
-    // Constructor 1
-    Coordination() = default;
-
-    // Constructor 2
+    // Constructor
     Coordination(double x_value, double y_value, double z_value) {
-        std::cout << "Calling constructor...\n";
+        std::cout << "Constructor is running...\n";
         x = x_value;
         y = y_value;
         z = z_value;
@@ -20,26 +20,62 @@ public:
 
     // Initializer list constructor
     Coordination(std::initializer_list<double> lst) {
-        std::cout << "Calling initializer list constructor...\n";
-        x = *(lst.begin());     // x = 11
-        y = *(lst.begin()+1);   // y = 22
-        z = *(lst.begin()+2);   // z = 33
+        std::cout << "Initializer list constructor is running...\n";
+        x = *(lst.begin());
+        y = *(lst.begin() + 1);
+        z = *(lst.begin() + 2);
     }
 
-    // Copy constructor
-    Coordination(const Coordination &old_coordination) {
-        std::cout << "Calling copy constructor...\n";
-        x = old_coordination.x;
-        y = old_coordination.y;
-        z = old_coordination.z;
+
+    // member function -- overload the `function-call operator()` (调用运算符)
+    double operator()(int idx_direction) const {
+        if (idx_direction == 0)
+            return x;
+        else if (idx_direction == 1)
+            return y;
+        else
+            return z;
     }
+
+
+    // friend function -- overloading the `operator<<`
+    friend std::ostream& operator<<(std::ostream &COUT, Coordination &c1);
+
+    // friend function -- used in `std::sort()` function
+    friend bool compare_coordinations(Coordination &c1, Coordination &c2);
 };
 
 
-int main() {
-    Coordination c_1{11,22,33}; // Calling initializer list constructor...
-    Coordination c_2 = c_1;     // Calling copy constructor
-    Coordination c_3(3,5,6);    // Calling constructor...
+// friend function 1
+std::ostream& operator<<(std::ostream &COUT, Coordination &c1) {
+    double distance = sqrt(pow(c1.x, 2) + pow(c1.y, 2) + pow(c1.z, 2));
+    COUT << "[" << c1.x << ", " << c1.y << ", " << c1.z << "]\t";
+    COUT << "Distance = " << distance << std::endl;
 
+    return COUT;
+}
+
+
+// friend function 2
+bool compare_coordinations(Coordination &c1, Coordination &c2) {
+    double distance_1 = pow(c1.x, 2) + pow(c1.y, 2) + pow(c1.z, 2);
+    double distance_2 = pow(c2.x, 2) + pow(c2.y, 2) + pow(c2.z, 2);
+    
+    return distance_1 >= distance_2;
+}
+
+
+int main() {
+    Coordination c_lst[] = { {1, 2, 3}, 
+                             {9, 5, 4},
+                             {4, 5, 6}
+                            };
+    int size = sizeof(c_lst) / sizeof(c_lst[0]);
+
+    std::sort(c_lst, c_lst + size, compare_coordinations);
+
+    for (auto c_value: c_lst)
+        std::cout << c_value;
+    
     return 0;
 }
