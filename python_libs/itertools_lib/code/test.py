@@ -1,21 +1,19 @@
+# Python code to demonstrate the working of 
+# accumulate()
 import itertools
+import operator
 
 
-lst = [1, 2, 3, 4]
-count_2 = 0
-count_3 = 0
+# initialize list 1
+lst = [1, 4, 5, 7]
 
-for item in itertools.combinations(lst, 2):
-    print(item)
-    count_2 += 1
 
+### Part I. Prints the successive summation of elements
+print("The sum after each iteraction is:")
+print( list(itertools.accumulate(lst)) )
 print('*' * 40)
 
-for item in itertools.combinations(lst, 3):
-    print(item)
-    count_3 += 1
 
-# count_2 = (4*3) / (1*2) = 6
-print("count_2 = {0}".format(count_2))
-# count_3 = (4*3*2) / (1*2*3) = 4
-print("count_3 = {0}".format(count_3))
+### Part II. Prints the successive multiokication of elements
+print("The production after each iteration is:")
+print( list(itertools.accumulate(lst, operator.mul)) )
